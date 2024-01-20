@@ -1,4 +1,9 @@
-sap.ui.define([], ()=> {
+sap.ui.define([
+    "sap/m/Text"
+], (Text)=> {
     'use strict';
-    alert('UI5 está pronto!');
+
+    new Text({
+        text:"Olá Camarada!!"
+    }).placeAt("content");
 });
