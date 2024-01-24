@@ -1,8 +1,9 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/ui/model/json/JSONModel"
-], function(Controller, MessageToast, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/model/resource/ResourceModel"
+], function(Controller, MessageToast, JSONModel, ResourceModel) {
     'use strict';
     
     return Controller.extend("ui5.walkthrough.controller.App", {
@@ -15,10 +16,21 @@ sap.ui.define([
             };
             const oModel = new JSONModel(oData);
             this.getView().setModel(oModel);
+
+            //set i18n model on view
+            const i18nModel = new ResourceModel({
+                bundleName:"ui5.walkthrough.i18n.i18n"
+            });
+            this.getView().setModel(i18nModel, "i18n");
         },
 
         onShowHello(){
-            MessageToast.show("Auf Wierdersen Asshole");
+            const oBundle = this.getView().getModel("i18n").getResourceBundle();
+            const sRecipient = this.getView().getModel().getProperty("/recipient/name");
+            const sMsg = oBundle.getText("helloMsg", [sRecipient]);
+
+            //show Message
+            MessageToast.show(sMsg);
         }
     });
 });
